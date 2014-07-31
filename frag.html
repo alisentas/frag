@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>HTML Frag</title>
+		<meta charset="utf-8">
+		<style>
+			html, body {
+				padding: 0;
+				margin: 0;
+			}
+			#FRAG {
+				background-color: lightblue;
+				border-bottom: 2px dashed blue;
+				width: 100%;
+				max-height: 450px;
+				padding: 10px;
+				font-family: helvetica;
+			}
+			#fragattrs, #fragstyles {
+				display: inline-block;
+				width: 48%;
+			}
+			#fragstyles {
+				float: right;
+			}
+			#fragattrs > div, #fragstyles > div {
+				max-height: 250px;
+				overflow: scroll;
+			}
+		</style>
+		<script type="text/javascript" src="jquery.js"></script>
+		<script>
+			var FragBase = {
+				// FragBase is the main container of all frag functions, it's the core of frag system
+				// It will hold the variables like our frags and methods like add, copy, delete, etc.
+				frags: {
+					// All frags have unique id, if an html variable has an id, frags id is it, if not, we will generate one.
+					// Generated id's will be random numbers between 1 and 1000000
+				},
+				frag: function(id, container, styles, attrs){
+					// id = unique identification string for a frag
+					// styles = contains objects with css styling options like {"width": 500, "background-color": "#ff0000"}, etc
+					// container = mother element
+					// attrs = html attributes like {"class": "hey", "type": "text", "placeholder": "Enter here"}
+					this.id = id;
+					this.fragpos = FragBase.frags.length
+					this.container = container;
+					this.styles = styles;
+					this.attrs = attrs;
+				},
+				addFrag: function(frag){
+					//insert new frag to fragbase.frags
+					FragBase.frags[frag.id] = frag;
+				},
+				fragjQuery: function(jQelem){
+					//This function creates frags from given jquery element
+					if(jQelem.attr("id") !== "undefined"){
+						//if selected element has an id, it stays with that
+						//else, we'll generate random number for that id
+						var id = jQelem.attr("id")
+					}else{
+						var id = Math.floor(Math.random() * 1000000 + 1);
+					}
+					var container = FragBase.frags[$(this).parent().attr("id")];
+					var styles = FragBase.generateStyles(jQelem, styles);
+					var attrs = FragBase.generateAttributes(jQelem);
+					FragBase.addFrag(new FragBase.frag(id, container, styles, attrs));
+				},
+				scanPage: function(){
+					//Basically, scans page for all html elements and turns them into frags
+					//but first, we need to convert our main div to a frag
+					FragBase.fragjQuery($("#fragcon"));
+					$("#fragcon > *").each(function(){
+						FragBase.fragjQuery($(this));
+					});
+				},
+				
+				// ----HELPER FUNCTÝONS ------
+				generateStyles: function(jQelem){
+					// This function is for fragjQuery method to generate all css styling for an element
+					var gstyle = {}; //gstyle is for generated style
+					var keywords = ["width", "height", "background-color", "color", "text-align", "font-family", "font-weight", "cursor"];//CSS keywords for styles
+					for(var key in keywords){
+						//loop through all styles in an element
+						gstyle[keywords[key]] = jQelem.css(keywords[key]);//add that rules to gstyle
+					}
+					return gstyle;//return generated style element for frag constructor
+				},
+				generateAttributes: function(jQelem){
+					var gattr = {};
+					var keywords = ["class","width","height","type","placeholder","src","href"];
+					for(var key in keywords){
+						//loop through all attributes in an element
+						gattr[keywords[key]] = jQelem.attr(keywords[key]);//add that rules to gattr
+					}
+					return gattr;//return generated attribute variables
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="FRAG">
+			<h1>Frag Panel</h1>
+			<p>You can edit frags here simply by clicking them</p>
+			<div id="fragopts">
+				<div id="fragattrs">
+					<h2>Attributes</h2>
+					<div>
+						lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet 
+					</div>
+				</div>
+				<div id="fragstyles">
+					<h2>Styles</h2>
+					<div>
+						lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet 
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="fragcon">
+			<div id="hey" style="background-color: #ff0000; cursor: pointer">
+			
+			</div>
+		</div>
+	</body>
+	<script>
+		FragBase.scanPage();
+	</script>
+</html>
