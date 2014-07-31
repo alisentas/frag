@@ -54,7 +54,7 @@
 				},
 				fragjQuery: function(jQelem){
 					//This function creates frags from given jquery element
-					if(jQelem.attr("id") !== "undefined"){
+					if(typeof jQelem.attr("id") !== "undefined"){
 						//if selected element has an id, it stays with that
 						//else, we'll generate random number for that id
 						var id = jQelem.attr("id")
@@ -63,10 +63,10 @@
 						while(FragBase.frags[id.toString()] !== undefined){
 							id = Math.floor(Math.random() * 1000000 + 1); // id overriding
 						}
-						var id = Math.floor(Math.random() * 1000000 + 1);
-						jQelem.attr("id",id);
+						jQelem.attr("id", id);
+						jQelem = $("#" + id);
 					}
-					var container = FragBase.frags[$(this).parent().attr("id")];
+					var container = FragBase.frags[jQelem.parent().attr("id")];
 					var styles = FragBase.generateStyles(jQelem, styles);
 					var attrs = FragBase.generateAttributes(jQelem);
 					FragBase.addFrag(new FragBase.frag(id, container, styles, attrs));
@@ -124,6 +124,9 @@
 		</div>
 		<div id="fragcon">
 			<div id="hey" style="background-color: #ff0000; cursor: pointer">
+			
+			</div>
+			<div placeholder="bubbles">
 			
 			</div>
 		</div>
