@@ -30,6 +30,9 @@
 			#FRAG .edited {
 				background-color: lightgreen;
 			}
+			#FRAG .added {
+				background-color: pink;
+			}
 			#FRAG > h1, #FRAG > p {
 				text-align: center;
 			}
@@ -43,6 +46,10 @@
 			#fragattrs > div, #fragstyles > div {
 				max-height: 250px;
 				overflow: scroll;
+			}
+			#fragbuttons {
+				text-align: center;
+				margin-top: 10px;
 			}
 			.editable-frag:hover {
 				background-color: white !important;
@@ -66,6 +73,7 @@
 					// container = mother element
 					// attrs = html attributes like {"class": "hey", "type": "text", "placeholder": "Enter here"}
 					this.id = id;
+					this.elem = $("#" + this.id);
 					this.container = container;
 					this.styles = styles;
 					this.attrs = attrs;
@@ -119,6 +127,9 @@
 					$(".editable-frag").on("click",function(){
 						FragBase.displayFrag(FragBase.frags[$(this).attr("id")]);
 					});
+					$(".editable-frag").each(function(){
+						$(this).attr("contenteditable", "true");
+					});
 				},
 				displayFrag: function(frag, rewrite){
 					$("#fragattrs > div > table > tbody").html("");
@@ -135,7 +146,28 @@
 					}
 					
 					for(var style in frag.styles){
-						if(frag.styles[style] !== undefined
+						var addedStyles = [];
+						var editedStyles = [];
+						var standardStyles = [];
+						if(frag.elem.attr("style") !== undefined){
+							if(frag.elem.attr("style").indexOf(style) > -1){
+							
+								$("#fragstyles > div > table > tbody").append('<tr class="added"><td contenteditable="true">' + style + '</td><td contenteditable="true">' + frag.styles[style] + '</td></tr>');
+							}else{
+								if(frag.styles[style] !== undefined
+								&& frag.styles[style] !== ""
+								&& frag.styles[style] !== "none"
+								&& frag.styles[style] !== "0px"
+								&& frag.styles[style] !== "rgb(0, 0, 0)"
+								&& frag.styles[style] !== "auto"
+								&& frag.styles[style] !== "visible"
+								&& frag.styles[style] !== "normal"){
+									$("#fragstyles > div > table > tbody").append('<tr class="edited"><td contenteditable="true">' + style + '</td><td contenteditable="true">' + frag.styles[style] + '</td></tr>');
+								}else{
+									$("#fragstyles > div > table > tbody").append('<tr><td contenteditable="true">' + style + '</td><td contenteditable="true">' + frag.styles[style] + '</td></tr>');
+								}
+							}
+						}else if(frag.styles[style] !== undefined
 						&& frag.styles[style] !== ""
 						&& frag.styles[style] !== "none"
 						&& frag.styles[style] !== "0px"
@@ -211,12 +243,17 @@
 						</table>
 					</div>
 				</div>
+				<hr/>
+				<div id="fragbuttons">
+					<button disabled>Delete Element</button>
+					<button disabled>Apply Styles</button>
+				</div>
 			</div>
 		</div>
 		<hr/>
 		<div id="fragcon">
 			<div id="hey" style="display: inline-block; background-color: #ff0000; cursor: pointer; width: 200px; height: 200px; border: 2px dotted black">
-				Heyhat
+				Heyhat <p>Acaip</p>
 			</div>
 			<div id="hey" style="display: inline-block; background-color: #00ff00; cursor: pointer; width: 200px; height: 200px; border: 2px dotted black">
 				Acaip
@@ -231,8 +268,5 @@
 	</body>
 	<script>
 		FragBase.scanPage();
-		$(".standard-table tbody tr").each(function(){
-			atts += '"' + $(this).children("td").first().html() + '", ';
-		});
 	</script>
 </html>
