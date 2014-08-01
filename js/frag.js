@@ -50,7 +50,7 @@
 					var styles = FragBase.generateStyles(jQelem);
 					var attrs = FragBase.generateAttributes(jQelem);
 					
-					//Editable frags html can be editable, because of the contenteditable option
+					//Editable frag's html can be editable, because of the contenteditable option
 					if(jQelem.attr("id") !== "fragcon") jQelem.addClass("editable-frag");
 					//Finally, we have all we need to create a frag, lets do this
 					FragBase.addFrag(new FragBase.frag(id, container, styles, attrs));
@@ -70,28 +70,34 @@
 						//add another selector for more deeper levels
 						scanner += " > *";
 					}
-					$(".editable-frag").on("click",function(){
-						//Display frags when clicked
+					$(".editable-frag").on("dblclick",function(e){
+						//Display frags when double clicked
+						e.stopPropagation();
 						FragBase.displayFrag(FragBase.frags[$(this).attr("id")]);
-						//enable buttons
-						$("#delElem, #copyElem, #updateElem").attr("disabled",false);
 					});
 					$(".editable-frag").each(function(){
 						//contenteditable means user can change text content of that element
 						$(this).attr("contenteditable", "true");
 					});
+					$("#fragAttrToggle").on("click", function(){
+						$("#fragAttr").toggle();
+					});
+					$("#fragStyleToggle").on("click", function(){
+						$("#fragStyle").toggle();
+					});
+					$("#fragAttrToggle").tooltip();
 				},
 				displayFrag: function(frag){
 					//remove table body content
-					$("#fragattrs > div > table > tbody").html("");
-					$("#fragstyles > div > table > tbody").html("");
+					$("#fragAttr").html("");
+					$("#fragStyle").html("");
 					//display attributes
 					for(var attr in frag.attrs){
 						//Display attrbutes if they are not undefined
 						if(frag.attrs[attr] !== undefined
 						&& frag.attrs[attr] !== "")
 						{
-							$("#fragattrs > div > table > tbody").append('<tr class="edited"><td contenteditable="true">' + attr + '</td><td contenteditable="true">' + frag.attrs[attr] + '</td></tr>');
+							$("#fragAttr").append('<tr class="success"><td contenteditable="true">' + attr + '</td><td contenteditable="true">' + frag.attrs[attr] + '</td></tr>');
 						}else{
 							$("#fragattrs > div > table > tbody").append('<tr><td contenteditable="true">' + attr + '</td><td contenteditable="true">' + frag.attrs[attr] + '</td></tr>');
 						}
@@ -134,15 +140,20 @@
 					//Display all style values,
 					//first added, then edited, finally default
 					for(var prop in addedStyles){
-						$("#fragstyles > div > table > tbody").append('<tr class="added"><td contenteditable="true">' + addedStyles[prop] + '</td><td contenteditable="true">' + frag.styles[addedStyles[prop]] + '</td></tr>');
+						$("#fragStyle").append('<tr class="info"><td contenteditable="true">' + addedStyles[prop] + '</td><td contenteditable="true">' + frag.styles[addedStyles[prop]] + '</td></tr>');
 					}
 					for(var prop in editedStyles){
-						$("#fragstyles > div > table > tbody").append('<tr class="edited"><td contenteditable="true">' + editedStyles[prop] + '</td><td contenteditable="true">' + frag.styles[editedStyles[prop]] + '</td></tr>');
+						$("#fragStyle").append('<tr class="success"><td contenteditable="true">' + editedStyles[prop] + '</td><td contenteditable="true">' + frag.styles[editedStyles[prop]] + '</td></tr>');
 					}
 					for(var prop in standardStyles){
-						$("#fragstyles > div > table > tbody").append('<tr><td contenteditable="true">' + standardStyles[prop] + '</td><td contenteditable="true">' + frag.styles[standardStyles[prop]] + '</td></tr>');
+						$("#fragStyle").append('<tr><td contenteditable="true">' + standardStyles[prop] + '</td><td contenteditable="true">' + frag.styles[standardStyles[prop]] + '</td></tr>');
 					}
+					$("#editFrag").modal();
 				},
+				editFrag: function(){
+					
+				},
+				
 				// ----HELPER FUNCTÝONS ------
 				generateStyles: function(jQelem){
 					// This function is for fragjQuery method to generate all css styling for an element
