@@ -144,15 +144,13 @@
 							$("#fragattrs > div > table > tbody").append('<tr><td contenteditable="true">' + attr + '</td><td contenteditable="true">' + frag.attrs[attr] + '</td></tr>');
 						}
 					}
-					
+					var addedStyles = [];
+					var editedStyles = [];
+					var standardStyles = [];
 					for(var style in frag.styles){
-						var addedStyles = [];
-						var editedStyles = [];
-						var standardStyles = [];
 						if(frag.elem.attr("style") !== undefined){
 							if(frag.elem.attr("style").indexOf(style) > -1){
-							
-								$("#fragstyles > div > table > tbody").append('<tr class="added"><td contenteditable="true">' + style + '</td><td contenteditable="true">' + frag.styles[style] + '</td></tr>');
+								addedStyles.push(style);
 							}else{
 								if(frag.styles[style] !== undefined
 								&& frag.styles[style] !== ""
@@ -162,9 +160,9 @@
 								&& frag.styles[style] !== "auto"
 								&& frag.styles[style] !== "visible"
 								&& frag.styles[style] !== "normal"){
-									$("#fragstyles > div > table > tbody").append('<tr class="edited"><td contenteditable="true">' + style + '</td><td contenteditable="true">' + frag.styles[style] + '</td></tr>');
+									editedStyles.push(style);
 								}else{
-									$("#fragstyles > div > table > tbody").append('<tr><td contenteditable="true">' + style + '</td><td contenteditable="true">' + frag.styles[style] + '</td></tr>');
+									standardStyles.push(style);
 								}
 							}
 						}else if(frag.styles[style] !== undefined
@@ -175,10 +173,19 @@
 						&& frag.styles[style] !== "auto"
 						&& frag.styles[style] !== "visible"
 						&& frag.styles[style] !== "normal"){
-							$("#fragstyles > div > table > tbody").append('<tr class="edited"><td contenteditable="true">' + style + '</td><td contenteditable="true">' + frag.styles[style] + '</td></tr>');
+							editedStyles.push(style);
 						}else{
-							$("#fragstyles > div > table > tbody").append('<tr><td contenteditable="true">' + style + '</td><td contenteditable="true">' + frag.styles[style] + '</td></tr>');
+							standardStyles.push(style);
 						}
+					}
+					for(var prop in addedStyles){
+						$("#fragstyles > div > table > tbody").append('<tr class="added"><td contenteditable="true">' + addedStyles[prop] + '</td><td contenteditable="true">' + frag.styles[addedStyles[prop]] + '</td></tr>');
+					}
+					for(var prop in editedStyles){
+						$("#fragstyles > div > table > tbody").append('<tr class="edited"><td contenteditable="true">' + editedStyles[prop] + '</td><td contenteditable="true">' + frag.styles[editedStyles[prop]] + '</td></tr>');
+					}
+					for(var prop in standardStyles){
+						$("#fragstyles > div > table > tbody").append('<tr><td contenteditable="true">' + standardStyles[prop] + '</td><td contenteditable="true">' + frag.styles[standardStyles[prop]] + '</td></tr>');
 					}
 				},
 				// ----HELPER FUNCTÝONS ------
