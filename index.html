@@ -3,120 +3,67 @@
 	<head>
 		<title>HTML Frag</title>
 		<meta charset="utf-8">
-		<style>
-			html, body {
-				padding: 0;
-				margin: 0;
-			}
-			* {
-				-moz-box-sizing: border-box;
-				-webkit-box-sizing: border-box;
-				box-sizing: border-box;
-			}
-			#FRAG {
-				background-color: lightblue;
-				border-bottom: 12px dashed blue;
-				width: 100%;
-				max-height: 450px;
-				padding: 10px;
-				font-family: helvetica;
-				margin-bottom: 10px;
-				border: 10px solid blue;
-				overflow: hidden;
-			}
-			#FRAG table {
-				width: 100%;
-			}
-			#FRAG .edited {
-				background-color: lightgreen;
-			}
-			#FRAG .added {
-				background-color: pink;
-			}
-			#FRAG > h1, #FRAG > p {
-				text-align: center;
-			}
-			#fragattrs, #fragstyles {
-				display: inline-block;
-				width: 48%;
-			}
-			#fragstyles {
-				float: right;
-			}
-			#fragattrs > div, #fragstyles > div {
-				max-height: 250px;
-				overflow: scroll;
-			}
-			#fragbuttons {
-				text-align: center;
-				margin-top: 10px;
-			}
-			.editable-frag:hover {
-				background-color: white !important;
-				border: 1px solid black !important;
-			}
-		</style>
+		<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
 		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/cssrulereference.js"></script>
 		<script type="text/javascript" src="js/htmlattributereference.js"></script>
 		<script type="text/javascript" src="js/frag.js"></script>
 	</head>
 	<body>
-		<div id="FRAG">
-			<h1>Frag Panel</h1>
-			<p>You can edit frags here simply by clicking them</p>
-			<div id="fragbuttons">
-					<button id="updateElem" disabled>Update Element</button>
-					<button id="copyElem" disabled>Copy Element</button>
-					<button id="delElem" disabled>Delete Element</button>
-			</div>
-			<hr/>
-			<div id="fragopts">
-				<div id="fragattrs">
-					<h2>Attributes</h2>
-					<div>
-						<table border="2">
-							<thead>
-								<tr>
-									<th>Name</th>
-									<th>Content</th>
-								</tr>
-							</thead>
-							<tbody>
+		<div style="background-color: black; color: white;font-family: helvetica; font-size: 14px; font-weight: bold; padding: 3px; width: 100%; text-align: center;">
+			Your'e running { Frag v1.0.0 } - Have fun.
+		</div>
+		<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#editFrag">
+			Launch demo modal
+		</button>
+		<div class="modal fade" id="editFrag">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h4 class="modal-title">Edit Element</h4>
+					</div>
+					<div class="modal-body">
+						<p>You can edit this frag here.</p>
+					</div>
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>Attribute Name</th>
+								<th>Attribute Content</th>
+							</tr>
+						</thead>
+						<tbody id="fragAttr">
 							
-							</body>
-						</table>
+						</tbody>
+						<thead>
+							<tr>
+								<th>Style Rule</th>
+								<th>Style Content</th>
+							</tr>
+						</thead>
+						<tbody id="fragStyle">
+						
+						</tbody>
+					</table>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success">Save changes</button>
+						<button type="button" class="btn btn-default">Copy Frag</button>
+						<button type="button" class="btn btn-danger">Delete Frag</button>
 					</div>
 				</div>
-				<div id="fragstyles">
-					<h2>Styles</h2>
-					<div>
-						<table border="2">
-							<thead>
-								<tr>
-									<th>Name</th>
-									<th>Content</th>
-								</tr>
-							</thead>
-							<tbody>
-							
-							</body>
-						</table>
-					</div>
-				</div>
-				
 			</div>
 		</div>
-		<hr/>
 		<div id="fragcon">
 			<div id="hey" style="display: inline-block; background-color: #ff0000; cursor: pointer; width: 200px; height: 200px; border: 2px dotted black">
-				Heyhat <p>Acaip</p>
+				Heyhat <p>Weird</p>
 			</div>
 			<div style="display: inline-block; background-color: #00ff00; cursor: pointer; width: 200px; height: 200px; border: 2px dotted black">
-				Acaip
+				Classy
 			</div>
-			<div style="display: inline-block; background-color: #ff00ff; cursor: pointer; width: 200px; height: 200px; border: 2px dotted black">
-				Nerdesin
+			<div style="display: inline-block; background-color: #ff00ff; cursor: pointer; width: 200px; height: 200px; border: 2px dotted black; font-family: helvetica; font-weight: bold; font-size: 40px">
+				Where are you
 			</div>
 			<div placeholder="bubbles">
 				bubble
