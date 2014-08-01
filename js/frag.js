@@ -78,6 +78,13 @@
 						//contenteditable means user can change text content of that element
 						$(this).attr("contenteditable", "true");
 					});
+					$("#fragAttrToggle").on("click", function(){
+						$("#fragAttr").toggle();
+					});
+					$("#fragStyleToggle").on("click", function(){
+						$("#fragStyle").toggle();
+					});
+					$("#fragAttrToggle").tooltip();
 				},
 				displayFrag: function(frag){
 					//remove table body content
@@ -142,6 +149,10 @@
 					}
 					$("#editFrag").modal();
 				},
+				editFrag: function(){
+					
+				},
+				
 				// ----HELPER FUNCTÝONS ------
 				generateStyles: function(jQelem){
 					// This function is for fragjQuery method to generate all css styling for an element

@@ -14,9 +14,6 @@
 		<div style="background-color: black; color: white;font-family: helvetica; font-size: 14px; font-weight: bold; padding: 3px; width: 100%; text-align: center;">
 			Your'e running { Frag v1.0.0 } - Have fun.
 		</div>
-		<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#editFrag">
-			Launch demo modal
-		</button>
 		<div class="modal fade" id="editFrag">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -29,6 +26,9 @@
 					</div>
 					<table class="table table-hover">
 						<thead>
+							<tr id="fragAttrToggle" data-toggle="tooltip" data-placement="top" title="Click to toggle">
+								<th colspan="2"><h3>Element Attributes</h3></th>
+							</tr>
 							<tr>
 								<th>Attribute Name</th>
 								<th>Attribute Content</th>
@@ -38,6 +38,9 @@
 							
 						</tbody>
 						<thead>
+							<tr id="fragStyleToggle">
+								<th colspan="2"><h3>Style Rules</h3></th>
+							</tr>
 							<tr>
 								<th>Style Rule</th>
 								<th>Style Content</th>
@@ -56,19 +59,18 @@
 			</div>
 		</div>
 		<div id="fragcon">
-			<div id="hey" style="display: inline-block; background-color: #ff0000; cursor: pointer; width: 200px; height: 200px; border: 2px dotted black">
-				Heyhat <p>Weird</p>
-			</div>
-			<div style="display: inline-block; background-color: #00ff00; cursor: pointer; width: 200px; height: 200px; border: 2px dotted black">
-				Classy
-			</div>
-			<div style="display: inline-block; background-color: #ff00ff; cursor: pointer; width: 200px; height: 200px; border: 2px dotted black; font-family: helvetica; font-weight: bold; font-size: 40px">
-				Where are you
-			</div>
-			<div placeholder="bubbles">
-				bubble
-			</div>
-			<input class="omg" type="password" method="post" value="pass">
+			<div id="maincon" style="background-color: lightblue;">
+				<div id="header" style="background-color: pink">
+					<img id="logo" src="http://upload.wikimedia.org/wikipedia/en/thumb/c/cd/Frogger_game_arcade.png/220px-Frogger_game_arcade.png">
+					<ul id="nav">
+						<li style="display: inline-block">Main Page</li>
+						<li style="display: inline-block">Blog</li>
+						<li style="display: inline-block">User Menu</li>
+						<li style="display: inline-block">Log Out</li>
+					</ul>
+				</div>
+				<h1>Buttons</h1>
+				<button>Don't Click Me</button>
 			</div>
 		</div>
 	</body>
