@@ -70,8 +70,9 @@
 						//add another selector for more deeper levels
 						scanner += " > *";
 					}
-					$(".editable-frag").on("dblclick",function(){
+					$(".editable-frag").on("dblclick",function(e){
 						//Display frags when double clicked
+						e.stopPropagation();
 						FragBase.displayFrag(FragBase.frags[$(this).attr("id")]);
 					});
 					$(".editable-frag").each(function(){
