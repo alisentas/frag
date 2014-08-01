@@ -126,6 +126,7 @@
 					}
 					$(".editable-frag").on("click",function(){
 						FragBase.displayFrag(FragBase.frags[$(this).attr("id")]);
+						$("#delElem, #copyElem, #updateElem").attr("disabled",false);
 					});
 					$(".editable-frag").each(function(){
 						$(this).attr("contenteditable", "true");
@@ -217,6 +218,12 @@
 		<div id="FRAG">
 			<h1>Frag Panel</h1>
 			<p>You can edit frags here simply by clicking them</p>
+			<div id="fragbuttons">
+					<button id="updateElem" disabled>Update Element</button>
+					<button id="copyElem" disabled>Copy Element</button>
+					<button id="delElem" disabled>Delete Element</button>
+			</div>
+			<hr/>
 			<div id="fragopts">
 				<div id="fragattrs">
 					<h2>Attributes</h2>
@@ -250,12 +257,7 @@
 						</table>
 					</div>
 				</div>
-				<hr/>
-				<div id="fragbuttons">
-					<button disabled>Delete Element</button>
-					<button disabled>Copy Element</button>
-					<button disabled>Apply Styles</button>
-				</div>
+				
 			</div>
 		</div>
 		<hr/>
@@ -271,6 +273,8 @@
 			</div>
 			<div placeholder="bubbles">
 				bubble
+			</div>
+			<input class="omg" type="password" method="post" value="pass">
 			</div>
 		</div>
 	</body>
