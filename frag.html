@@ -8,13 +8,30 @@
 				padding: 0;
 				margin: 0;
 			}
+			* {
+				-moz-box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+			}
 			#FRAG {
 				background-color: lightblue;
-				border-bottom: 2px dashed blue;
+				border-bottom: 12px dashed blue;
 				width: 100%;
 				max-height: 450px;
 				padding: 10px;
 				font-family: helvetica;
+				margin-bottom: 10px;
+				border: 10px solid blue;
+				overflow: hidden;
+			}
+			#FRAG table {
+				width: 100%;
+			}
+			#FRAG .edited {
+				background-color: lightgreen;
+			}
+			#FRAG > h1, #FRAG > p {
+				text-align: center;
 			}
 			#fragattrs, #fragstyles {
 				display: inline-block;
@@ -27,8 +44,14 @@
 				max-height: 250px;
 				overflow: scroll;
 			}
+			.editable-frag:hover {
+				background-color: white !important;
+				border: 1px solid black !important;
+			}
 		</style>
 		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="cssrulereference.js"></script>
+		<script type="text/javascript" src="htmlattributereference.js"></script>
 		<script>
 			var FragBase = {
 				// FragBase is the main container of all frag functions, it's the core of frag system
@@ -43,10 +66,18 @@
 					// container = mother element
 					// attrs = html attributes like {"class": "hey", "type": "text", "placeholder": "Enter here"}
 					this.id = id;
-					this.fragpos = FragBase.frags.length
 					this.container = container;
 					this.styles = styles;
 					this.attrs = attrs;
+				},
+				countFrags: function(){
+					//found this on StackOverflow: 
+					//http://stackoverflow.com/questions/5223/length-of-javascript-object-ie-associative-array#answer-6700
+					var size = 0, key;
+					for (key in FragBase.frags) {
+						if (FragBase.frags.hasOwnProperty(key)) size++;
+					}
+					return size;
 				},
 				addFrag: function(frag){
 					//insert new frag to fragbase.frags
@@ -61,42 +92,82 @@
 					}else{
 						var id = Math.floor(Math.random() * 1000000 + 1);
 						while(FragBase.frags[id.toString()] !== undefined){
+							//if an element has the same id number (very rare probabilty but we have to be sure)
+							//it will try another one
 							id = Math.floor(Math.random() * 1000000 + 1); // id overriding
 						}
 						jQelem.attr("id", id);
 						jQelem = $("#" + id);
 					}
-					var container = FragBase.frags[jQelem.parent().attr("id")];
+					var container = FragBase.frags[jQelem.parent().attr("id")];//container of this element, holder
 					var styles = FragBase.generateStyles(jQelem, styles);
 					var attrs = FragBase.generateAttributes(jQelem);
+					if(jQelem.attr("id") !== "fragcon") jQelem.addClass("editable-frag");
 					FragBase.addFrag(new FragBase.frag(id, container, styles, attrs));
 				},
 				scanPage: function(){
 					//Basically, scans page for all html elements and turns them into frags
 					//but first, we need to convert our main div to a frag
 					FragBase.fragjQuery($("#fragcon"));
-					$("#fragcon > *").each(function(){
-						FragBase.fragjQuery($(this));
+					var scanner = "#fragcon > *";
+					while($(scanner).length > 0){
+						$(scanner).each(function(){
+							FragBase.fragjQuery($(this));
+						});
+						scanner += " > *";
+					}
+					$(".editable-frag").on("click",function(){
+						FragBase.displayFrag(FragBase.frags[$(this).attr("id")]);
 					});
 				},
-				
+				displayFrag: function(frag, rewrite){
+					$("#fragattrs > div > table > tbody").html("");
+					$("#fragstyles > div > table > tbody").html("");
+					
+					for(var attr in frag.attrs){
+						if(frag.attrs[attr] !== undefined
+						&& frag.attrs[attr] !== "")
+						{
+							$("#fragattrs > div > table > tbody").append('<tr class="edited"><td contenteditable="true">' + attr + '</td><td contenteditable="true">' + frag.attrs[attr] + '</td></tr>');
+						}else{
+							$("#fragattrs > div > table > tbody").append('<tr><td contenteditable="true">' + attr + '</td><td contenteditable="true">' + frag.attrs[attr] + '</td></tr>');
+						}
+					}
+					
+					for(var style in frag.styles){
+						if(frag.styles[style] !== undefined
+						&& frag.styles[style] !== ""
+						&& frag.styles[style] !== "none"
+						&& frag.styles[style] !== "0px"
+						&& frag.styles[style] !== "rgb(0, 0, 0)"
+						&& frag.styles[style] !== "auto"
+						&& frag.styles[style] !== "visible"
+						&& frag.styles[style] !== "normal"){
+							$("#fragstyles > div > table > tbody").append('<tr class="edited"><td contenteditable="true">' + style + '</td><td contenteditable="true">' + frag.styles[style] + '</td></tr>');
+						}else{
+							$("#fragstyles > div > table > tbody").append('<tr><td contenteditable="true">' + style + '</td><td contenteditable="true">' + frag.styles[style] + '</td></tr>');
+						}
+					}
+				},
 				// ----HELPER FUNCTÝONS ------
 				generateStyles: function(jQelem){
 					// This function is for fragjQuery method to generate all css styling for an element
 					var gstyle = {}; //gstyle is for generated style
-					var keywords = ["width", "height", "background-color", "color", "text-align", "font-family", "font-weight", "cursor"];//CSS keywords for styles
-					for(var key in keywords){
+					for(var key in cssStyles){
 						//loop through all styles in an element
-						gstyle[keywords[key]] = jQelem.css(keywords[key]);//add that rules to gstyle
+						if(jQelem.css(cssStyles[key]) !== ""){
+							gstyle[cssStyles[key]] = jQelem.css(cssStyles[key]);//add that rules to gstyle
+						}
 					}
 					return gstyle;//return generated style element for frag constructor
 				},
 				generateAttributes: function(jQelem){
 					var gattr = {};
-					var keywords = ["class","width","height","type","placeholder","src","href"];
-					for(var key in keywords){
+					for(var key in htmlAttrs){
 						//loop through all attributes in an element
-						gattr[keywords[key]] = jQelem.attr(keywords[key]);//add that rules to gattr
+						if(jQelem.attr(htmlAttrs[key]) !== undefined){
+							gattr[htmlAttrs[key]] = jQelem.attr(htmlAttrs[key]);//add that rules to gattr
+						}
 					}
 					return gattr;//return generated attribute variables
 				}
@@ -111,27 +182,57 @@
 				<div id="fragattrs">
 					<h2>Attributes</h2>
 					<div>
-						lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet 
+						<table border="2">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Content</th>
+								</tr>
+							</thead>
+							<tbody>
+							
+							</body>
+						</table>
 					</div>
 				</div>
 				<div id="fragstyles">
 					<h2>Styles</h2>
 					<div>
-						lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet 
+						<table border="2">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Content</th>
+								</tr>
+							</thead>
+							<tbody>
+							
+							</body>
+						</table>
 					</div>
 				</div>
 			</div>
 		</div>
+		<hr/>
 		<div id="fragcon">
-			<div id="hey" style="background-color: #ff0000; cursor: pointer">
-			
+			<div id="hey" style="display: inline-block; background-color: #ff0000; cursor: pointer; width: 200px; height: 200px; border: 2px dotted black">
+				Heyhat
+			</div>
+			<div id="hey" style="display: inline-block; background-color: #00ff00; cursor: pointer; width: 200px; height: 200px; border: 2px dotted black">
+				Acaip
+			</div>
+			<div id="hey" style="display: inline-block; background-color: #ff00ff; cursor: pointer; width: 200px; height: 200px; border: 2px dotted black">
+				Nerdesin
 			</div>
 			<div placeholder="bubbles">
-			
+				bubble
 			</div>
 		</div>
 	</body>
 	<script>
 		FragBase.scanPage();
+		$(".standard-table tbody tr").each(function(){
+			atts += '"' + $(this).children("td").first().html() + '", ';
+		});
 	</script>
 </html>
