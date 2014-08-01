@@ -149,7 +149,7 @@
 					$("#fragstyles > div > table > tbody").html("");
 					//display attributes
 					for(var attr in frag.attrs){
-						
+						//Display attrbutes if they are not undefined
 						if(frag.attrs[attr] !== undefined
 						&& frag.attrs[attr] !== "")
 						{
@@ -158,9 +158,10 @@
 							$("#fragattrs > div > table > tbody").append('<tr><td contenteditable="true">' + attr + '</td><td contenteditable="true">' + frag.attrs[attr] + '</td></tr>');
 						}
 					}
-					var addedStyles = [];
-					var editedStyles = [];
-					var standardStyles = [];
+					
+					var addedStyles = []; // added styles is whose in elements style attribute
+					var editedStyles = []; // styles that hasn't got default value
+					var standardStyles = []; // styles which has default value
 					for(var style in frag.styles){
 						if(frag.elem.attr("style") !== undefined){
 							if(frag.elem.attr("style").indexOf(style) > -1){
@@ -192,6 +193,8 @@
 							standardStyles.push(style);
 						}
 					}
+					//Display all style values,
+					//first added, then edited, finally default
 					for(var prop in addedStyles){
 						$("#fragstyles > div > table > tbody").append('<tr class="added"><td contenteditable="true">' + addedStyles[prop] + '</td><td contenteditable="true">' + frag.styles[addedStyles[prop]] + '</td></tr>');
 					}
@@ -278,10 +281,10 @@
 			<div id="hey" style="display: inline-block; background-color: #ff0000; cursor: pointer; width: 200px; height: 200px; border: 2px dotted black">
 				Heyhat <p>Acaip</p>
 			</div>
-			<div id="hey" style="display: inline-block; background-color: #00ff00; cursor: pointer; width: 200px; height: 200px; border: 2px dotted black">
+			<div style="display: inline-block; background-color: #00ff00; cursor: pointer; width: 200px; height: 200px; border: 2px dotted black">
 				Acaip
 			</div>
-			<div id="hey" style="display: inline-block; background-color: #ff00ff; cursor: pointer; width: 200px; height: 200px; border: 2px dotted black">
+			<div style="display: inline-block; background-color: #ff00ff; cursor: pointer; width: 200px; height: 200px; border: 2px dotted black">
 				Nerdesin
 			</div>
 			<div placeholder="bubbles">
