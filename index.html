@@ -3,65 +3,16 @@
 	<head>
 		<title>HTML Frag</title>
 		<meta charset="utf-8">
-		<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
-		<script type="text/javascript" src="js/jquery.js"></script>
-		<script type="text/javascript" src="js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="js/cssrulereference.js"></script>
-		<script type="text/javascript" src="js/htmlattributereference.js"></script>
-		<script type="text/javascript" src="js/frag.js"></script>
+		<script type="text/javascript" src="frag/js/jquery.js"></script>
+		<script type="text/javascript" src="frag/js/frag.js"></script>
 	</head>
 	<body>
-		<div style="background-color: black; color: white;font-family: helvetica; font-size: 14px; font-weight: bold; padding: 3px; width: 100%; text-align: center;">
-			Your'e running { Frag v1.0.0 } - Have fun.
-		</div>
-		<div class="modal fade" id="editFrag">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-						<h4 class="modal-title">Edit Element</h4>
-					</div>
-					<div class="modal-body">
-						<p>You can edit this frag here.</p>
-					</div>
-					<table class="table table-hover">
-						<thead>
-							<tr id="fragAttrToggle" data-toggle="tooltip" data-placement="top" title="Click to toggle">
-								<th colspan="2"><h3>Element Attributes</h3></th>
-							</tr>
-							<tr>
-								<th>Attribute Name</th>
-								<th>Attribute Content</th>
-							</tr>
-						</thead>
-						<tbody id="fragAttr">
-							
-						</tbody>
-						<thead>
-							<tr id="fragStyleToggle">
-								<th colspan="2"><h3>Style Rules</h3></th>
-							</tr>
-							<tr>
-								<th>Style Rule</th>
-								<th>Style Content</th>
-							</tr>
-						</thead>
-						<tbody id="fragStyle">
-						
-						</tbody>
-					</table>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-success">Save changes</button>
-						<button type="button" class="btn btn-default">Copy Frag</button>
-						<button type="button" class="btn btn-danger">Delete Frag</button>
-					</div>
-				</div>
-			</div>
-		</div>
+		
+		
 		<div id="fragcon">
 			<div id="maincon" style="background-color: lightblue;">
 				<div id="header" style="background-color: pink">
-					<img id="logo" src="http://upload.wikimedia.org/wikipedia/en/thumb/c/cd/Frogger_game_arcade.png/220px-Frogger_game_arcade.png">
+					
 					<ul id="nav">
 						<li style="display: inline-block">Main Page</li>
 						<li style="display: inline-block">Blog</li>
@@ -69,12 +20,18 @@
 						<li style="display: inline-block">Log Out</li>
 					</ul>
 				</div>
+				<h1>An Image</h1>
+				<img id="logo" src="http://upload.wikimedia.org/wikipedia/en/thumb/c/cd/Frogger_game_arcade.png/220px-Frogger_game_arcade.png">
 				<h1>Buttons</h1>
 				<button>Don't Click Me</button>
+				<h2>Some input</h2>
+				<input type="text" placeholder="Taking fire, need assistance">
+				<input id="user_pass" type="pass" value="password">
+				<label for="user_pass">Enter your password above</label>
 			</div>
 		</div>
 	</body>
 	<script>
-		FragBase.scanPage();
+		
 	</script>
 </html>
