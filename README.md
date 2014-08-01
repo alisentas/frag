@@ -9,7 +9,7 @@ How Does Frag System Work?
 First of all, all elements scanned and turned into customizable frags.
 Frags can be removed from dom, copied and users can create frags and append them to dom.
 Users can customize almost everything and save and get code.
----
+
 Users can select frags by double clicking any html element.
 A bootstrap modal will be shown where users can change that elements specs.
 
