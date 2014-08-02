@@ -1,4 +1,13 @@
+/**
+ * Frag.js - 02.08.2014
+ * by Ali Þentaþ
+ */
+
 var id, container, styles, attrs, scanner, attr, addedStyles, editedStyles, standardStyles, style, gstyle, gattr, key, bodyContent;
+var allStyles = "";
+$("style").each(function(){
+	allStyles += $(this).text();
+});
 var FragBase = {
         // FragBase is the main container of all frag functions, it's the core of frag system
         // It will hold the variables like our frags and methods like add, copy, delete, etc.
@@ -11,6 +20,7 @@ var FragBase = {
                 // styles = contains objects with css styling options like {"width": 500, "background-color": "#ff0000"}, etc
                 // container = mother element
                 // attrs = html attributes like {"class": "hey", "type": "text", "placeholder": "Enter here"}
+				//***** May be I should rebuild display, editfrag function to more OOP style like this.display = function() etc
                 this.id = id;
                 this.elem = $("#" + this.id);
                 this.container = container;
@@ -28,6 +38,7 @@ var FragBase = {
         },
         addFrag: function(frag){
                 //insert new frag to fragbase.frags
+				//This function works, no need to rebuild
                 FragBase.frags[frag.id] = frag;
         },
         fragjQuery: function(jQelem){
@@ -173,10 +184,13 @@ var FragBase = {
 			}
         },
 		init: function(){
-			$("head").append('<link type="text/css" rel="stylesheet" href="frag/css/bootstrap.min.css">');
-			$("head").append('<script type="text/javascript" src="frag/js/bootstrap.min.js"></script>');
+			// launches the frag system
+			// does critical changes on pages html
+			$("head").append('<link type="text/css" rel="stylesheet" href="frag/css/bootstrap.min.css">'); //upload bootstrap
+			$("head").append('<script type="text/javascript" src="frag/js/bootstrap.min.js"></script>'); //upload bootstrap js
 			$("head").append('<script type="text/javascript" src="frag/js/cssrulereference.js"></script>');
-			$("head").append('<script type="text/javascript" src="frag/js/htmlattributereference.js">');
+			$("head").append('<script type="text/javascript" src="frag/js/htmlattributereference.js">');//html attribute reference, needed in generateAttributes method
+			//copy all body content to frgcon, it will be the thing with contains our frags
 			bodyContent = $("body").html();
 			$("body").html("");
 			$("body").append('<div style="background-color: black; color: white;font-family: helvetica; font-size: 14px;\ font-weight: bold; padding: 3px; width: 100%; text-align: center;">\
@@ -236,6 +250,7 @@ var FragBase = {
         // ----HELPER FUNCTÝONS ------
         generateStyles: function(jQelem){
                 // This function is for fragjQuery method to generate all css styling for an element
+				//****This function doesnt work, since it generate all styles, I need user edited ones maybe I should start here
                 gstyle = {}; //gstyle is for generated style
                 for(key in cssStyles){
                         //loop through all styles in an element
@@ -246,6 +261,7 @@ var FragBase = {
                 return gstyle;//return generated style element for frag constructor
         },
         generateAttributes: function(jQelem){
+				//This function works, no need to rebuild
                 gattr = {};
                 for(key in htmlAttrs){
                         //loop through all attributes in an element
