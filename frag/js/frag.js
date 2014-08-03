@@ -126,7 +126,8 @@ var FragBase = {
                         }
                 }
                 for(style in frag.styles){
-						$("#fragStyle").append('<tr class="frag-style"><td contenteditable="true">' + style + '</td><td contenteditable="true" class="frag-style-content">' + frag.styles[style] + '</td></tr>');
+					//Simply display all frag styles
+					$("#fragStyle").append('<tr class="frag-style"><td contenteditable="true">' + style + '</td><td contenteditable="true" class="frag-style-content">' + frag.styles[style] + '</td></tr>');
                 }
                 $("#editFrag").modal();
         },
