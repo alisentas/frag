@@ -3,7 +3,7 @@
  * by Ali Þentaþ
  */
 
-var id, container, styles, attrs, scanner, attr, addedStyles, editedStyles, standardStyles, style, gstyle, gattr, key, bodyContent;
+var id, container, styles, attrs, scanner, attr, style, gstyle, gattr, key, bodyContent;
 var allStyles = "";
 $("style").each(function(){
 	allStyles += $(this).text();
@@ -125,51 +125,8 @@ var FragBase = {
                                 $("#fragattrs > div > table > tbody").append('<tr class="frag-attribute"><td contenteditable="true" class="frag-attr-content">' + attr + '</td><td contenteditable="true">' + frag.attrs[attr] + '</td></tr>');
                         }
                 }
-
-                addedStyles = []; // added styles is whose in elements style attribute
-                editedStyles = []; // styles that hasn't got default value
-                standardStyles = []; // styles which has default value
                 for(style in frag.styles){
-                        if(frag.elem.attr("style") !== undefined){
-                                if(frag.elem.attr("style").indexOf(style) > -1){
-                                        addedStyles.push(style);
-                                }else{
-                                        if(frag.styles[style] !== undefined
-                                        && frag.styles[style] !== ""
-                                        && frag.styles[style] !== "none"
-                                        && frag.styles[style] !== "0px"
-                                        && frag.styles[style] !== "rgb(0, 0, 0)"
-                                        && frag.styles[style] !== "auto"
-                                        && frag.styles[style] !== "visible"
-                                        && frag.styles[style] !== "normal"){
-                                                editedStyles.push(style);
-                                        }else{
-                                                standardStyles.push(style);
-                                        }
-                                }
-                        }else if(frag.styles[style] !== undefined
-                        && frag.styles[style] !== ""
-                        && frag.styles[style] !== "none"
-                        && frag.styles[style] !== "0px"
-                        && frag.styles[style] !== "rgb(0, 0, 0)"
-                        && frag.styles[style] !== "auto"
-                        && frag.styles[style] !== "visible"
-                        && frag.styles[style] !== "normal"){
-                                editedStyles.push(style);
-                        }else{
-                                standardStyles.push(style);
-                        }
-                }
-                //Display all style values,
-                //first added, then edited, finally default
-                for(style in addedStyles){
-                        $("#fragStyle").append('<tr class="info frag-style"><td contenteditable="true">' + addedStyles[style] + '</td><td contenteditable="true" class="frag-style-content">' + frag.styles[addedStyles[style]] + '</td></tr>');
-                }
-                for(style in editedStyles){
-                        $("#fragStyle").append('<tr class="success frag-style"><td contenteditable="true">' + editedStyles[style] + '</td><td contenteditable="true" class="frag-style-content">' + frag.styles[editedStyles[style]] + '</td></tr>');
-                }
-                for(style in standardStyles){
-                        $("#fragStyle").append('<tr class="frag-style"><td contenteditable="true">' + standardStyles[style] + '</td><td contenteditable="true" class="frag-style-content">' + frag.styles[standardStyles[style]] + '</td></tr>');
+						$("#fragStyle").append('<tr class="frag-style"><td contenteditable="true">' + style + '</td><td contenteditable="true" class="frag-style-content">' + frag.styles[style] + '</td></tr>');
                 }
                 $("#editFrag").modal();
         },
@@ -254,7 +211,13 @@ var FragBase = {
                 gstyle = {}; //gstyle is for generated style
                 for(key in cssStyles){
                         //loop through all styles in an element
-                        if(jQelem.css(cssStyles[key]) !== ""){
+						if(jQelem.attr("style") !== undefined){
+							if(jQelem.attr("style").indexOf(cssStyles[key]) > -1){
+								gstyle[cssStyles[key]] = jQelem.css(cssStyles[key]);
+							}else if(allStyles.indexOf(cssStyles[key]) > -1){
+								gstyle[cssStyles[key]] = jQelem.css(cssStyles[key]);
+							}
+						}else if(allStyles.indexOf(cssStyles[key]) > -1){
                                 gstyle[cssStyles[key]] = jQelem.css(cssStyles[key]);//add that rules to gstyle
                         }
                 }
