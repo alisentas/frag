@@ -16,14 +16,10 @@ A bootstrap modal will be shown where users can change that elements specs.
 How to Use It?
 ====
 
-First of all, you need to add these line to your html page
+You should only include these two lines to your html page
 ```html
 <script type="text/javascript" src="frag/js/jquery.js"></script>
 <script type="text/javascript" src="frag/js/frag.js"></script>
-```
-And you need to call 
-```js
-FragBase.init()
 ```
 function right after the page loaded in the console.
 

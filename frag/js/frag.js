@@ -20,12 +20,49 @@ var FragBase = {
                 // styles = contains objects with css styling options like {"width": 500, "background-color": "#ff0000"}, etc
                 // container = mother element
                 // attrs = html attributes like {"class": "hey", "type": "text", "placeholder": "Enter here"}
-				//***** May be I should rebuild display, editfrag function to more OOP style like this.display = function() etc
+				
                 this.id = id;
                 this.elem = $("#" + this.id);
                 this.container = container;
                 this.styles = styles;
                 this.attrs = attrs;
+				
+				this.display = function(){
+					//remove table body content
+					$("#fragAttr").html("");
+					$("#fragStyle").html("");
+					//display attributes
+					for(attr in this.attrs){
+							//Display attrbutes if they are not undefined
+							if(this.attrs[attr] !== undefined
+							&& this.attrs[attr] !== "")
+							{
+									$("#fragAttr").append('<tr class="success frag-attribute"><td contenteditable="true">' + attr + '</td><td contenteditable="true" class="frag-attr-content">' + this.attrs[attr] + '</td></tr>');
+							}else{
+									$("#fragattrs > div > table > tbody").append('<tr class="frag-attribute"><td contenteditable="true" class="frag-attr-content">' + attr + '</td><td contenteditable="true">' + this.attrs[attr] + '</td></tr>');
+							}
+					}
+					for(style in this.styles){
+						//Simply display all frag styles
+						$("#fragStyle").append('<tr class="frag-style"><td contenteditable="true">' + style + '</td><td contenteditable="true" class="frag-style-content">' + this.styles[style] + '</td></tr>');
+					}
+					$("#editFrag").modal();
+				}
+				this.edit = function(attrs, styles){
+					frag.attrs = attrs;
+					frag.styles = styles;
+					frag.id = attrs["id"];
+					for(key in frag.attrs){
+						if(frag.attrs.hasOwnProperty(key)){
+							$("#" + frag.id).attr(key, frag.attrs[key])
+						}
+					}
+					for(key in styles){
+						if(frag.styles.hasOwnProperty(key)){
+							$("#" + frag.id).css(key, frag.styles[key])
+						}
+					}
+				}
         },
         countFrags: function(){
                 //found this on StackOverflow: 
@@ -85,7 +122,7 @@ var FragBase = {
                 $(".editable-frag").on("dblclick",function(e){
                         //Display frags when double clicked
                         e.stopPropagation();
-                        FragBase.displayFrag(FragBase.frags[$(this).attr("id")]);
+                        FragBase.frags[$(this).attr("id")].display();
                 });
                 $(".editable-frag").each(function(){
                         //contenteditable means user can change text content of that element
@@ -107,39 +144,8 @@ var FragBase = {
 					$(".frag-style").each(function(){
 						styles[$(this).children("td").first().text()] = $(this).children(".frag-style-content").text();
 					});
-					FragBase.editFrag("#" + attrs["id"], attrs, styles);
+					FragBase.frags("#" + attrs["id"]).edit(attrs, styles);
 				});
-        },
-        displayFrag: function(frag){
-                //remove table body content
-                $("#fragAttr").html("");
-                $("#fragStyle").html("");
-                //display attributes
-                for(attr in frag.attrs){
-                        //Display attrbutes if they are not undefined
-                        if(frag.attrs[attr] !== undefined
-                        && frag.attrs[attr] !== "")
-                        {
-                                $("#fragAttr").append('<tr class="success frag-attribute"><td contenteditable="true">' + attr + '</td><td contenteditable="true" class="frag-attr-content">' + frag.attrs[attr] + '</td></tr>');
-                        }else{
-                                $("#fragattrs > div > table > tbody").append('<tr class="frag-attribute"><td contenteditable="true" class="frag-attr-content">' + attr + '</td><td contenteditable="true">' + frag.attrs[attr] + '</td></tr>');
-                        }
-                }
-                for(style in frag.styles){
-					//Simply display all frag styles
-					$("#fragStyle").append('<tr class="frag-style"><td contenteditable="true">' + style + '</td><td contenteditable="true" class="frag-style-content">' + frag.styles[style] + '</td></tr>');
-                }
-                $("#editFrag").modal();
-        },
-        editFrag: function(frag, attrs, styles){
-			frag.attrs = attrs;
-			frag.styles = styles;
-			frag.id = attrs["id"];
-			for(key in frag.attrs){
-				if(frag.attrs.hasOwnProperty(key)){
-					$("#" + frag.id).attr(key, frag.attrs[key])
-				}
-			}
         },
 		init: function(){
 			// launches the frag system
@@ -236,3 +242,6 @@ var FragBase = {
                 return gattr;//return generated attribute variables
         }
 }
+
+//Start the system after document load
+$(document).ready(FragBase.init);
