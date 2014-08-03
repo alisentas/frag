@@ -23,6 +23,13 @@ You should only include these two lines to your html page
 ```
 function right after the page loaded in the console.
 
+If you have jQuery in your page, just add this line to your head tag
+```html
+<script type="text/javascript" src="frag/js/frag.js"></script>
+```
+
+Frag system will be auto initialized after page loads. If you see a black ribbon in the top, it means you managed to run the frag system correctly.
+
 What Frameworks do Frag Use?
 ====
 
@@ -33,5 +40,8 @@ Milestones
 
  - [x] Added FragBase
  - [x] Display Frags
- - [ ] Edit Frags
+ - [x] Edit Frags
+ - [ ] Copy Frags
  - [x] Visual Improvements
+ - [ ] Frag Option Menu
+ 
