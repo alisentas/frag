@@ -169,9 +169,6 @@ var FragBase = {
 						</div>\
 						<div class="modal-body">\
 							<p>You can edit this frag here.</p>\
-							<div class="alert alert-info">\
-								<b>Quick tip: </b>Don\'t change the editable-frag class, or you may not edit your element again\
-							</div>\
 						</div>\
 						<table class="table table-hover">\
 							<thead>\
