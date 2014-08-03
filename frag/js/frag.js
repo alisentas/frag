@@ -49,17 +49,17 @@ var FragBase = {
 					$("#editFrag").modal();
 				}
 				this.edit = function(attrs, styles){
-					frag.attrs = attrs;
-					frag.styles = styles;
-					frag.id = attrs["id"];
-					for(key in frag.attrs){
-						if(frag.attrs.hasOwnProperty(key)){
-							$("#" + frag.id).attr(key, frag.attrs[key])
+					this.attrs = attrs;
+					this.styles = styles;
+					this.id = attrs["id"];
+					for(key in this.attrs){
+						if(this.attrs.hasOwnProperty(key)){
+							$("#" + this.id).attr(key, this.attrs[key])
 						}
 					}
-					for(key in styles){
-						if(frag.styles.hasOwnProperty(key)){
-							$("#" + frag.id).css(key, frag.styles[key])
+					for(key in this.styles){
+						if(this.styles.hasOwnProperty(key)){
+							$("#" + this.id).css(key, this.styles[key])
 						}
 					}
 				}
@@ -144,7 +144,7 @@ var FragBase = {
 					$(".frag-style").each(function(){
 						styles[$(this).children("td").first().text()] = $(this).children(".frag-style-content").text();
 					});
-					FragBase.frags("#" + attrs["id"]).edit(attrs, styles);
+					FragBase.frags[attrs["id"]].edit(attrs, styles);
 				});
         },
 		init: function(){
@@ -200,7 +200,7 @@ var FragBase = {
 							</tbody>\
 						</table>\
 						<div class="modal-footer">\
-							<button id="saveFrag" type="button" class="btn btn-success">Save changes</button>\
+							<button id="saveFrag" data-dismiss="modal" type="button" class="btn btn-success">Save changes</button>\
 							<button type="button" class="btn btn-default">Copy Frag</button>\
 							<button type="button" class="btn btn-danger">Delete Frag</button>\
 						</div>\
