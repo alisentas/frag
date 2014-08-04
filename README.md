@@ -41,7 +41,8 @@ Milestones
  - [x] Added FragBase
  - [x] Display Frags
  - [x] Edit Frags
- - [ ] Copy Frags
+ - [x] Copy Frags
+ - [x] Delete Frags
  - [x] Visual Improvements
  - [ ] Frag Option Menu
  

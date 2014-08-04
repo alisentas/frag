@@ -154,7 +154,21 @@ var FragBase = {
 			$("body").html("");
 			//append our edit frag modal to html
 			$("body").append('<div style="background-color: black; color: white;font-family: helvetica; font-size: 14px;\ font-weight: bold; padding: 3px; width: 100%; text-align: center;">\
-			Your\'e running { Frag v1.0.0 } - Have fun.\
+			Your\'e running { Frag v1.0.0 } - <a id="openFragSettings" data-dismiss="modal" class="btn btn-link">Frag Settings</a> - Have fun.\
+			</div>');
+			$("body").append('<div class="modal fade" id="fragSettings">\
+				<div class="modal-dialog">\
+					<div class="modal-content">\
+						<div class="modal-header">\
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\
+							<h4 class="modal-title">Frag Settings</h4>\
+						</div>\
+						<div class="modal-body">\
+							<p>You can manage page settings here and get pages code here.</p>\
+							<button class="btn btn-primary">Get HTML Code</button>\
+						</div>\
+					</div>\
+				</div>\
 			</div>');
 			$("body").append('<div class="modal fade" id="editFrag">\
 				<div class="modal-dialog">\
@@ -244,7 +258,11 @@ var FragBase = {
 				});
 				$("#copyFrag").on("click", function(){
 					FragBase.frags[curFrag].copy();
-				})
+				});
+				$("#openFragSettings").on("click", function(){
+				
+				$("#fragSettings").modal();
+				});
 		},
         // ----HELPER FUNCTÝONS ------
         generateStyles: function(jQelem){
