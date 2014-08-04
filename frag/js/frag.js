@@ -3,7 +3,7 @@
  * by Ali Þentaþ
  */
 
-var id, container, styles, attrs, scanner, attr, style, gstyle, gattr, key, bodyContent;
+var id, container, styles, attrs, scanner, attr, style, gstyle, gattr, key, bodyContent, curFrag;
 var allStyles = "";
 $("style").each(function(){
 	allStyles += $(this).text();
@@ -14,6 +14,7 @@ var FragBase = {
         frags: {
                 // All frags have unique id, if an html variable has an id, frags id is it, if not, we will generate one.
                 // Generated id's will be random numbers between 1 and 1000000
+				// This is the container object of all frags
         },
         frag: function(id, container, styles, attrs){
                 // id = unique identification string for a frag
@@ -62,6 +63,10 @@ var FragBase = {
 							$("#" + this.id).css(key, this.styles[key])
 						}
 					}
+				}
+				this.remove = function(){
+					$("#" + this.id).remove("");
+					delete FragBase.frags[this.id];
 				}
         },
         countFrags: function(){
@@ -123,6 +128,7 @@ var FragBase = {
                         //Display frags when double clicked
                         e.stopPropagation();
                         FragBase.frags[$(this).attr("id")].display();
+						curFrag = $(this).attr("id");
                 });
                 $(".editable-frag").each(function(){
                         //contenteditable means user can change text content of that element
@@ -146,6 +152,9 @@ var FragBase = {
 					});
 					FragBase.frags[attrs["id"]].edit(attrs, styles);
 				});
+				$("#delFrag").on("click", function(){
+					FragBase.frags[curFrag].remove();
+				});
         },
 		init: function(){
 			// launches the frag system
@@ -157,6 +166,7 @@ var FragBase = {
 			//copy all body content to frgcon, it will be the thing with contains our frags
 			bodyContent = $("body").html();
 			$("body").html("");
+			//append our edit frag modal to html
 			$("body").append('<div style="background-color: black; color: white;font-family: helvetica; font-size: 14px;\ font-weight: bold; padding: 3px; width: 100%; text-align: center;">\
 			Your\'e running { Frag v1.0.0 } - Have fun.\
 			</div>');
@@ -198,8 +208,8 @@ var FragBase = {
 						</table>\
 						<div class="modal-footer">\
 							<button id="saveFrag" data-dismiss="modal" type="button" class="btn btn-success">Save changes</button>\
-							<button type="button" class="btn btn-default">Copy Frag</button>\
-							<button type="button" class="btn btn-danger">Delete Frag</button>\
+							<button type="button" class="btn btn-default" disabled>Copy Frag</button>\
+							<button id="delFrag" data-dismiss="modal" type="button" class="btn btn-danger">Delete Frag</button>\
 						</div>\
 					</div>\
 				</div>\
