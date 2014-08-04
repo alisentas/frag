@@ -51,9 +51,7 @@ var FragBase = {
 					$("#editFrag").modal();
 				};
 				this.copy = function(){
-					var newElem = $("#" + this.id).clone();
-					newElem.attr("id", undefined);
-					$("#" + this.container.id).append(newElem);
+					this.elem.clone().removeAttr("id").appendTo("#" + this.container.id);
 					FragBase.scanPage();
 				}
 				this.edit = function(attrs, styles){
@@ -137,48 +135,12 @@ var FragBase = {
                         //add another selector for more deeper levels
                         scanner += " > *";
                 }
-                $(".editable-frag").on("dblclick",function(e){
+				$(".editable-frag").on("dblclick",function(e){
                         //Display frags when double clicked
                         e.stopPropagation();
                         FragBase.frags[$(this).attr("id")].display();
 						curFrag = $(this).attr("id");
                 });
-                $(".editable-frag").each(function(){
-                        //contenteditable means user can change text content of that element
-                        $(this).attr("contenteditable", "true");
-                });
-                $("#fragAttrToggle").on("click", function(){
-                        $("#fragAttr").toggle();
-                });
-                $("#fragStyleToggle").on("click", function(){
-                        $("#fragStyle").toggle();
-                });
-                $("#fragAttrToggle").tooltip();
-				$("#saveFrag").on("click", function(){
-					attrs = {};
-					styles = {};
-					$(".frag-attribute").each(function(){
-						attrs[$(this).children("td").first().text()] = $(this).children(".frag-attr-content").text();
-					});
-					$(".frag-style").each(function(){
-						styles[$(this).children("td").first().text()] = $(this).children(".frag-style-content").text();
-					});
-					FragBase.frags[curFrag].edit(attrs, styles);
-				});
-				$("#delFrag").on("click", function(){
-					FragBase.frags[curFrag].remove();
-				});
-				$("#addFragAttr").on("click", function(e){
-					e.preventDefault();
-					$("#fragAttr").append('<tr class="info frag-attribute"><td contenteditable="true"> </td><td contenteditable="true" class="frag-attr-content"> </td></tr>');
-				});
-				$("#addFragStyle").on("click", function(e){
-					e.preventDefault();
-					$("#fragStyle").append('<tr class="info frag-style"><td contenteditable="true"> </td><td contenteditable="true" class="frag-style-content"> </td></tr>');
-				});
-				$("#copyFrag").on("click", function(){
-					FragBase.frags[curFrag].copy();
-				})
         },
 		init: function(){
 			// launches the frag system
@@ -241,6 +203,48 @@ var FragBase = {
 			$("body").append('<div id="fragcon"></div>');
 			$("#fragcon").html(bodyContent);
 			FragBase.scanPage();
+				$(".editable-frag").on("dblclick",function(e){
+                        //Display frags when double clicked
+                        e.stopPropagation();
+                        FragBase.frags[$(this).attr("id")].display();
+						curFrag = $(this).attr("id");
+                });
+                $(".editable-frag").each(function(){
+                        //contenteditable means user can change text content of that element
+                        $(this).attr("contenteditable", "true");
+                });
+                $("#fragAttrToggle").on("click", function(){
+                        $("#fragAttr").toggle();
+                });
+                $("#fragStyleToggle").on("click", function(){
+                        $("#fragStyle").toggle();
+                });
+                $("#fragAttrToggle").tooltip();
+				$("#saveFrag").on("click", function(){
+					attrs = {};
+					styles = {};
+					$(".frag-attribute").each(function(){
+						attrs[$(this).children("td").first().text()] = $(this).children(".frag-attr-content").text();
+					});
+					$(".frag-style").each(function(){
+						styles[$(this).children("td").first().text()] = $(this).children(".frag-style-content").text();
+					});
+					FragBase.frags[curFrag].edit(attrs, styles);
+				});
+				$("#delFrag").on("click", function(){
+					FragBase.frags[curFrag].remove();
+				});
+				$("#addFragAttr").on("click", function(e){
+					e.preventDefault();
+					$("#fragAttr").append('<tr class="info frag-attribute"><td contenteditable="true"> </td><td contenteditable="true" class="frag-attr-content"> </td></tr>');
+				});
+				$("#addFragStyle").on("click", function(e){
+					e.preventDefault();
+					$("#fragStyle").append('<tr class="info frag-style"><td contenteditable="true"> </td><td contenteditable="true" class="frag-style-content"> </td></tr>');
+				});
+				$("#copyFrag").on("click", function(){
+					FragBase.frags[curFrag].copy();
+				})
 		},
         // ----HELPER FUNCTÝONS ------
         generateStyles: function(jQelem){
