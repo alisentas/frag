@@ -2,7 +2,7 @@
  * Frag.js - 02.08.2014
  * by Ali Şentaş
  */
-
+ 
 var id, container, styles, attrs, scanner, attr, style, gstyle, gattr, key, bodyContent, curFrag;
 // curfrag is selected frags id
 var allStyles = "";
@@ -314,6 +314,5 @@ var FragBase = {
                 return gattr;//return generated attribute variables
         }
 }
-
 //Start the system after document load
 $(document).ready(FragBase.init);
