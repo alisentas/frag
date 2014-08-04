@@ -49,6 +49,12 @@ var FragBase = {
 						$("#fragStyle").append('<tr class="frag-style"><td contenteditable="true">' + style + '</td><td contenteditable="true" class="frag-style-content">' + this.styles[style] + '</td></tr>');
 					}
 					$("#editFrag").modal();
+				};
+				this.copy = function(){
+					var newElem = $("#" + this.id).clone();
+					newElem.attr("id", undefined);
+					$("#" + this.container.id).append(newElem);
+					FragBase.scanPage();
 				}
 				this.edit = function(attrs, styles){
 					this.attrs = attrs;
@@ -70,11 +76,11 @@ var FragBase = {
 							}
 						}
 					}
-				}
+				};
 				this.remove = function(){
 					$("#" + this.id).remove("");
 					delete FragBase.frags[this.id];
-				}
+				};
         },
         countFrags: function(){
                 //found this on StackOverflow: 
@@ -170,6 +176,9 @@ var FragBase = {
 					e.preventDefault();
 					$("#fragStyle").append('<tr class="info frag-style"><td contenteditable="true"> </td><td contenteditable="true" class="frag-style-content"> </td></tr>');
 				});
+				$("#copyFrag").on("click", function(){
+					FragBase.frags[curFrag].copy();
+				})
         },
 		init: function(){
 			// launches the frag system
@@ -223,7 +232,7 @@ var FragBase = {
 						</table>\
 						<div class="modal-footer">\
 							<button id="saveFrag" data-dismiss="modal" type="button" class="btn btn-success">Save changes</button>\
-							<button type="button" class="btn btn-default" disabled>Copy Frag</button>\
+							<button id="copyFrag" data-dismiss="modal"type="button" class="btn btn-default">Copy Frag</button>\
 							<button id="delFrag" data-dismiss="modal" type="button" class="btn btn-danger">Delete Frag</button>\
 						</div>\
 					</div>\
