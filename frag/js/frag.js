@@ -79,6 +79,11 @@ var FragBase = {
 					$("#" + this.id).remove("");
 					delete FragBase.frags[this.id];
 				};
+				this.add = function(){
+					//insert new frag to fragbase.frags
+					//This function works, no need to rebuild
+					FragBase.frags[this.id] = this;
+				}
         },
         countFrags: function(){
                 //found this on StackOverflow: 
@@ -88,11 +93,6 @@ var FragBase = {
                         if (FragBase.frags.hasOwnProperty(key)) size++;
                 }
                 return size;
-        },
-        addFrag: function(frag){
-                //insert new frag to fragbase.frags
-				//This function works, no need to rebuild
-                FragBase.frags[frag.id] = frag;
         },
         fragjQuery: function(jQelem){
                 //This function creates frags from given jquery element
@@ -118,7 +118,7 @@ var FragBase = {
                 //Editable frag's html can be editable, because of the contenteditable option
                 if(jQelem.attr("id") !== "fragcon") jQelem.addClass("editable-frag");
                 //Finally, we have all we need to create a frag, lets do this
-                FragBase.addFrag(new FragBase.frag(id, container, styles, attrs));
+                new FragBase.frag(id, container, styles, attrs).add();
         },
         scanPage: function(){
                 //Basically, scans page for all html elements and turns them into frags
