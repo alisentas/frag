@@ -4,6 +4,7 @@
  */
 
 var id, container, styles, attrs, scanner, attr, style, gstyle, gattr, key, bodyContent, curFrag;
+// curfrag is selected frags id
 var allStyles = "";
 $("style").each(function(){
 	allStyles += $(this).text();
@@ -58,9 +59,15 @@ var FragBase = {
 							$("#" + this.id).attr(key, this.attrs[key])
 						}
 					}
+					$("#" + this.id).attr("style", "");
 					for(key in this.styles){
 						if(this.styles.hasOwnProperty(key)){
-							$("#" + this.id).css(key, this.styles[key])
+							$("#" + this.id).css(key, this.styles[key]);
+							if($("#" + this.id).attr("style") == undefined){
+								$("#" + this.id).attr("style", key + ": " + this.styles[key]);
+							}else{
+								$("#" + this.id).attr("style",$("#" + this.id).attr("style") + ";" + key + ": " + this.styles[key]);
+							}
 						}
 					}
 				}
@@ -150,10 +157,18 @@ var FragBase = {
 					$(".frag-style").each(function(){
 						styles[$(this).children("td").first().text()] = $(this).children(".frag-style-content").text();
 					});
-					FragBase.frags[attrs["id"]].edit(attrs, styles);
+					FragBase.frags[curFrag].edit(attrs, styles);
 				});
 				$("#delFrag").on("click", function(){
 					FragBase.frags[curFrag].remove();
+				});
+				$("#addFragAttr").on("click", function(e){
+					e.preventDefault();
+					$("#fragAttr").append('<tr class="info frag-attribute"><td contenteditable="true"> </td><td contenteditable="true" class="frag-attr-content"> </td></tr>');
+				});
+				$("#addFragStyle").on("click", function(e){
+					e.preventDefault();
+					$("#fragStyle").append('<tr class="info frag-style"><td contenteditable="true"> </td><td contenteditable="true" class="frag-style-content"> </td></tr>');
 				});
         },
 		init: function(){
@@ -182,8 +197,8 @@ var FragBase = {
 						</div>\
 						<table class="table table-hover">\
 							<thead>\
-								<tr id="fragAttrToggle" data-toggle="tooltip" data-placement="top" title="Click to toggle">\
-									<th colspan="2"><h3>Element Attributes</h3></th>\
+								<tr >\
+									<th colspan="2"><h3 id="fragAttrToggle" data-toggle="tooltip" data-placement="top" title="Click to toggle" style="display: inline">Element Attributes </h3><button id="addFragAttr"class="btn btn-xs btn-success">+</button></th>\
 								</tr>\
 								<tr>\
 									<th>Attribute Name</th>\
@@ -194,8 +209,8 @@ var FragBase = {
 								\
 							</tbody>\
 							<thead>\
-								<tr id="fragStyleToggle">\
-									<th colspan="2"><h3>Style Rules</h3></th>\
+								<tr>\
+									<th colspan="2"><h3 id="fragStyleToggle" style="display: inline">Style Rules </h3><button id="addFragStyle"class="btn btn-xs btn-success">+</button></th>\
 								</tr>\
 								<tr>\
 									<th>Style Rule</th>\
