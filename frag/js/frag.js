@@ -156,20 +156,6 @@ var FragBase = {
 			$("body").append('<div style="background-color: black; color: white;font-family: helvetica; font-size: 14px;\ font-weight: bold; padding: 3px; width: 100%; text-align: center;">\
 			Your\'e running { Frag v1.0.0 } - <a id="openFragSettings" data-dismiss="modal" class="btn btn-link">Frag Settings</a> - Have fun.\
 			</div>');
-			$("body").append('<div class="modal fade" id="fragHTML">\
-				<div class="modal-dialog">\
-					<div class="modal-content">\
-						<div class="modal-header">\
-							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\
-							<h4 class="modal-title">Page HTML</h4>\
-						</div>\
-						<div class="modal-body">\
-							<textarea class="form-control" rows="50" id="fragPageHtml">\
-							</textarea>\
-						</div>\
-					</div>\
-				</div>\
-			</div>');
 			$("body").append('<div class="modal fade" id="fragSettings">\
 				<div class="modal-dialog">\
 					<div class="modal-content">\
@@ -179,7 +165,7 @@ var FragBase = {
 						</div>\
 						<div class="modal-body">\
 							<p>You can manage page settings here and get pages code here.</p>\
-							<button id="getFragHtml" class="btn btn-primary">Get HTML Code</button>\
+							<button class="btn btn-primary">Get HTML Code</button>\
 						</div>\
 					</div>\
 				</div>\
@@ -275,12 +261,7 @@ var FragBase = {
 				});
 				$("#openFragSettings").on("click", function(){
 				
-					$("#fragSettings").modal();
-				});
-				$("#getFragHtml").on("click", function(){
-					$("#fragPageHtml").text($("#fragcon").html());
-					$("#fragSettings").hide();
-					$("#fragHTML").modal();
+				$("#fragSettings").modal();
 				});
 		},
         // ----HELPER FUNCTÝONS ------
